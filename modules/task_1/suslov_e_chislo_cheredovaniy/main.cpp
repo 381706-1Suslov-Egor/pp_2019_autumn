@@ -28,11 +28,11 @@ TEST(Parallel_Operations_MPI, Test_values_positiv_or_null) {
   const int count_size_vector = 100;
   int ChisloCheredovaniy;
   if (rank == 0) {
-	  global_vec = getRandomVector(count_size_vector);
+	    global_vec = getRandomVector(count_size_vector);
 		  ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
   }
   if (rank == 0) {
-		   ASSERT_GT(ChisloCheredovaniy, 0);
+		  ASSERT_GT(ChisloCheredovaniy, 0);
   }
 }
 
@@ -43,11 +43,11 @@ TEST(Parallel_Operations_MPI, Test_on_rand_primere_chetnom) {
   const int count_size_vector = 100;
   int ChisloCheredovaniy;
   if (rank == 0) {
-		   global_vec = getRandomVector(count_size_vector);
-		   ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
+	    global_vec = getRandomVector(count_size_vector);
+			ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
   }
   if (rank == 0) {
-       ASSERT_GT(ChisloCheredovaniy, 0);
+      ASSERT_GT(ChisloCheredovaniy, 0);
   }
 }
 
@@ -58,11 +58,11 @@ TEST(Parallel_Operations_MPI, ) {
   const int count_size_vector = 101;
   int ChisloCheredovaniy;
   if (rank == 0) {
-		   global_vec = getRandomVector(count_size_vector);
-		   ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
+	    global_vec = getRandomVector(count_size_vector);
+		  ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
   }
   if (rank == 0) {
-       ASSERT_GT(ChisloCheredovaniy, 0);
+      ASSERT_GT(ChisloCheredovaniy, 0);
   }
 }
 
@@ -85,17 +85,17 @@ TEST(Parallel_Operations_MPI, Test_sravneniye_chisla_cheredovaniy) {
   }
 }
 int main(int argc, char** argv) {
-	::testing::InitGoogleTest(&argc, argv);
-	MPI_Init(&argc, &argv);
+		::testing::InitGoogleTest(&argc, argv);
+		MPI_Init(&argc, &argv);
 
-	::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
-	::testing::TestEventListeners& listeners =
-			::testing::UnitTest::GetInstance()->listeners();
+		::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
+		::testing::TestEventListeners& listeners =
+				::testing::UnitTest::GetInstance()->listeners();
 
-	listeners.Release(listeners.default_result_printer());
-	listeners.Release(listeners.default_xml_generator());
-   
-	listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
-	return RUN_ALL_TESTS();
+		listeners.Release(listeners.default_result_printer());
+		listeners.Release(listeners.default_xml_generator());
+
+		listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
+		return RUN_ALL_TESTS();
 }
 
