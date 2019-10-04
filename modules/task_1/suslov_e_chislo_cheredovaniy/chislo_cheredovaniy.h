@@ -1,6 +1,6 @@
-// Copyright 2018 Nesterov Alexander
-#ifndef MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
-#define MODULES_TEST_TASKS_TEST_MPI_OPS_MPI_H_
+// Copyright 2019 Suslov Egor
+#ifndef MODULES_TASK_1_CHISLO_CHEREDOVANIY_H_
+#define MODULES_TASK_1_CHISLO_CHEREDOVANIY_H_
 
 #include <vector>
 #include <string>

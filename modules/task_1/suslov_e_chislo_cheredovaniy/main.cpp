@@ -1,4 +1,4 @@
-// Copyright 2018 Nesterov Alexander
+// Copyright 2019 Suslov Egor
 #include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <vector>
