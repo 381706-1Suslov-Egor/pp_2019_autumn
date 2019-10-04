@@ -2,8 +2,8 @@
 #include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <vector>
-#include "chislo_cheredovaniy.h"
 #include <mpi.h>
+#include "../../../modules/task_1/suslov_e_chislo_cheredovaniy/chislo_cheredovaniy.h"
 
 TEST(Parallel_Operations_MPI, Test_on_primere_chetnom) {
     int rank;

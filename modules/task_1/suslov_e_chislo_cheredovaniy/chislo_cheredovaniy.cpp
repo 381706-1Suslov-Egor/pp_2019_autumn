@@ -7,7 +7,6 @@
 #include <algorithm>
 #include "../../../modules/task_1/suslov_e_chislo_cheredovaniy/chislo_cheredovaniy.h"
 
-
 std::vector<int> getRandomVector(int sz) {
     std::mt19937 gen;
     gen.seed(static_cast<unsigned int>(time(0)));
