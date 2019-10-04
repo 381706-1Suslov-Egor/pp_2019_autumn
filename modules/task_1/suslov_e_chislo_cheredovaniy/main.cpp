@@ -28,8 +28,8 @@ TEST(Parallel_Operations_MPI, Test_values_positiv_or_null) {
   const int count_size_vector = 100;
   int ChisloCheredovaniy;
   if (rank == 0) {
-	 	   global_vec = getRandomVector(count_size_vector);
-		   ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
+	  global_vec = getRandomVector(count_size_vector);
+		  ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
   }
   if (rank == 0) {
 		   ASSERT_GT(ChisloCheredovaniy, 0);
@@ -94,7 +94,7 @@ int main(int argc, char** argv) {
 
 	listeners.Release(listeners.default_result_printer());
 	listeners.Release(listeners.default_xml_generator());
-
+   
 	listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
 	return RUN_ALL_TESTS();
 }

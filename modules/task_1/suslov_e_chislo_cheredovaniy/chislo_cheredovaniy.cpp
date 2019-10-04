@@ -51,17 +51,17 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
 	     std::vector<int> v(size);
 	     //v[0]= global_vec[full + ostatok_elem - 1];
 	     for (int n = 1; n < size; n++) {
-			     v[n] = global_vec[ostatok_elem - 1 + n*full];
-			     MPI_Send(&v[n] , 1, MPI_INT, n, 0, MPI_COMM_WORLD);
+	     v[n] = global_vec[ostatok_elem - 1 + n*full];
+	     MPI_Send(&v[n] , 1, MPI_INT, n, 0, MPI_COMM_WORLD);
 	     }
   }
   else {
 	     int v;
-	     MPI_Status status;
-	     MPI_Recv(&v, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+       MPI_Status status;
+       MPI_Recv(&v, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
 	     local_chislo_cheredovaniy += getChisloCheredovaniy(local_vec, local_vec.size());
 	     if (v*local_vec[0] < 0) {
-			      local_chislo_cheredovaniy += 1;
+		     local_chislo_cheredovaniy += 1;
 	     }
   }
   MPI_Op op_code;
