@@ -77,3 +77,4 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
     return global_chislo_cheredovaniy;
 }
 
+

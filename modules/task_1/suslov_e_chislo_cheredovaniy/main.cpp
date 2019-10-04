@@ -6,21 +6,17 @@
 #include "../../../modules/task_1/suslov_e_chislo_cheredovaniy/chislo_cheredovaniy.h"
 
 TEST(Parallel_Operations_MPI, Test_on_primere_chetnom) {
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	std::vector<int> global_vec = { 2, -1, -2, -3, 5, 6, 7, 8 };
-    
-
-    int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
-        ASSERT_EQ(ChisloCheredovaniy, 2);
+  int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
+  ASSERT_EQ(ChisloCheredovaniy, 2);
 }
 
 TEST(Parallel_Operations_MPI, Test_on_primere_nechetnom) {
 	int rank;
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	std::vector<int> global_vec = { 2, -1, -2, -3, 5, 6, 7, 8, 9 };
-
-
 	int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
 	ASSERT_EQ(ChisloCheredovaniy, 2);
 }
@@ -67,8 +63,6 @@ TEST(Parallel_Operations_MPI, ) {
 		global_vec = getRandomVector(count_size_vector);
 		ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
 	}
-
-
 	if (rank == 0) {
 		ASSERT_TRUE(ChisloCheredovaniy >= 0);
 	}
@@ -96,14 +90,13 @@ TEST(Parallel_Operations_MPI, Test_sravneniye_chisla_cheredovaniy) {
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
-
     ::testing::AddGlobalTestEnvironment(new GTestMPIListener::MPIEnvironment);
     ::testing::TestEventListeners& listeners =
         ::testing::UnitTest::GetInstance()->listeners();
-
     listeners.Release(listeners.default_result_printer());
     listeners.Release(listeners.default_xml_generator());
 
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
     return RUN_ALL_TESTS();
 }
+
