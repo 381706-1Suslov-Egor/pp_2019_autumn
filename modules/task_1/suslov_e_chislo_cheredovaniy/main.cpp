@@ -9,7 +9,9 @@ TEST(Parallel_Operations_MPI, Test_on_primere_chetnom) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec = { 2, -1, -2, -3, 5, 6, 7, 8 };
     int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
-    ASSERT_EQ(ChisloCheredovaniy, 2);
+    if (rank == 0) {
+        ASSERT_EQ(ChisloCheredovaniy, 2);
+    }
 }
 
 TEST(Parallel_Operations_MPI, Test_on_primere_nechetnom) {
@@ -17,7 +19,9 @@ TEST(Parallel_Operations_MPI, Test_on_primere_nechetnom) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec = { 2, -1, -2, -3, 5, 6, 7, 8, 9 };
     int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
-    ASSERT_EQ(ChisloCheredovaniy, 2);
+    if (rank == 0) {
+        ASSERT_EQ(ChisloCheredovaniy, 2);
+    }
 }
 
 TEST(Parallel_Operations_MPI, Test_values_positiv_or_null) {
