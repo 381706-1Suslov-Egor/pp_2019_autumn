@@ -19,9 +19,9 @@ int getChisloCheredovaniy(std::vector<int> vector, int count_size_vector) {
     const int  size = vector.size();
     int chislo_cheredovaniy = 0, c;
     for (c = 1; c < size; c++) {
-	      if (vector[c]*vector[c - 1] < 0) {
-			      chislo_cheredovaniy++;
-	      }
+	       if (vector[c] * vector[c - 1] < 0) {
+			       chislo_cheredovaniy++;
+	       }
     }
     return chislo_cheredovaniy;
 }
@@ -34,12 +34,12 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
     const int ostatok_elem = count_size_vector % size;
     if (rank == 0) {
         for (int proc = 1; proc < size; proc++) {
-					  MPI_Send(&global_vec[ostatok_elem] + proc * full, full, MPI_INT, proc, 0, MPI_COMM_WORLD);
+            MPI_Send(&global_vec[ostatok_elem] + proc * full, full, MPI_INT, proc, 0, MPI_COMM_WORLD);
         }
     }
     std::vector<int> local_vec(full);
     if (rank == 0) {
-	      local_vec = std::vector<int>(global_vec.begin(), global_vec.begin() + full + ostatok_elem);
+        local_vec = std::vector<int>(global_vec.begin(), global_vec.begin() + full + ostatok_elem);
     } else {
         MPI_Status status; 
         MPI_Recv(&local_vec[0], full, MPI_INT, 0, 0, MPI_COMM_WORLD, &status); 
@@ -47,19 +47,19 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
     int global_chislo_cheredovaniy = 0;  
     int local_chislo_cheredovaniy = 0; 
     if (rank == 0) { 
-	      local_chislo_cheredovaniy += getChisloCheredovaniy(local_vec, local_vec.size()); 
+        local_chislo_cheredovaniy += getChisloCheredovaniy(local_vec, local_vec.size()); 
         std::vector<int> v(size); 
-	      for (int n = 1; n < size; n++) { 
-	          v[n] = global_vec[ostatok_elem - 1 + n*full]; 
-	          MPI_Send(&v[n] , 1, MPI_INT, n, 0, MPI_COMM_WORLD); 
+        for (int n = 1; n < size; n++) { 
+            v[n] = global_vec[ostatok_elem - 1 + n*full]; 
+            MPI_Send(&v[n] , 1, MPI_INT, n, 0, MPI_COMM_WORLD); 
 	      }
     } else {
-	      int v;
+        int v;
         MPI_Status status;
         MPI_Recv(&v, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
-	      local_chislo_cheredovaniy += getChisloCheredovaniy(local_vec, local_vec.size());
-	      if (v*local_vec[0] < 0) {
-		        local_chislo_cheredovaniy+=1;
+        local_chislo_cheredovaniy += getChisloCheredovaniy(local_vec, local_vec.size());
+        if (v*local_vec[0] < 0) {
+            local_chislo_cheredovaniy+=1;
 	      }
     }
     MPI_Op op_code;
