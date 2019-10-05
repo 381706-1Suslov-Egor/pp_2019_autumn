@@ -27,7 +27,6 @@ TEST(Parallel_Operations_MPI, Test_on_primere_nechetnom) {
 TEST(Parallel_Operations_MPI, Test_on_two_values) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    
     if (rank == 0) {
         std::vector<int> global_vec = { 2, -1};
         int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
@@ -68,7 +67,6 @@ TEST(Parallel_Operations_MPI, Test_sravneniye_chisla_cheredovaniy) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec, local_vec;
     const int count_size_vector = 100;
-    
     if (rank == 0) {
         int ChisloCheredovaniy1, ChisloCheredovaniy2;
         local_vec = getRandomVector(count_size_vector);
