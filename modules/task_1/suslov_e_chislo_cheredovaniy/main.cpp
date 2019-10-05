@@ -35,7 +35,7 @@ TEST(Parallel_Operations_MPI, Test_on_two_values) {
 }
 
 TEST(Parallel_Operations_MPI, Test_on_rand_primere_chetnom) {
-    int rank, int ChisloCheredovaniy;
+    int rank, ChisloCheredovaniy;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
     const int count_size_vector = 100;
