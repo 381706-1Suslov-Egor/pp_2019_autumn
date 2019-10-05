@@ -18,8 +18,8 @@ TEST(Parallel_Operations_MPI, Test_on_primere_nechetnom) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec = { 2, -1, -2, -3, 5, 6, 7, 8, 9 };
+    int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
     if (rank == 0) {
-        int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
         ASSERT_EQ(ChisloCheredovaniy, 2);
     }
 }
