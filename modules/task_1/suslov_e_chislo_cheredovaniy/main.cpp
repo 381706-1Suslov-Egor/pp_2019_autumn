@@ -27,9 +27,9 @@ TEST(Parallel_Operations_MPI, Test_on_primere_nechetnom) {
 TEST(Parallel_Operations_MPI, Test_on_two_values) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> global_vec = { 2, -1 };
+    int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
     if (rank == 0) {
-        std::vector<int> global_vec = { 2, -1};
-        int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
         ASSERT_EQ(ChisloCheredovaniy, 1);
     }
 }
@@ -39,11 +39,14 @@ TEST(Parallel_Operations_MPI, Test_on_rand_primere_chetnom) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
     const int count_size_vector = 100;
+    int ChisloCheredovaniy;
     if (rank == 0) {
-        int ChisloCheredovaniy = 0, TrueChisloCheredovaniy = 0;
         global_vec = getRandomVector(count_size_vector);
+    }
+    ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
+    if (rank == 0) {
+        int TrueChisloCheredovaniy = 0;
         TrueChisloCheredovaniy = getChisloCheredovaniy(global_vec, global_vec.size());
-        ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
         ASSERT_EQ(ChisloCheredovaniy, TrueChisloCheredovaniy);
     }
 }
@@ -53,11 +56,14 @@ TEST(Parallel_Operations_MPI, Test_on_rand_primere_nechetnom) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
     const int count_size_vector = 101;
+    int ChisloCheredovaniy;
     if (rank == 0) {
-        int ChisloCheredovaniy = 0, TrueChisloCheredovaniy = 0;
         global_vec = getRandomVector(count_size_vector);
+    }
+    ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
+    if (rank == 0) {
+        int TrueChisloCheredovaniy = 0;
         TrueChisloCheredovaniy = getChisloCheredovaniy(global_vec, global_vec.size());
-        ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
         ASSERT_EQ(ChisloCheredovaniy, TrueChisloCheredovaniy);
     }
 }
@@ -67,15 +73,17 @@ TEST(Parallel_Operations_MPI, Test_sravneniye_chisla_cheredovaniy) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec, local_vec;
     const int count_size_vector = 100;
+    int ChisloCheredovaniy1, ChisloCheredovaniy2;
     if (rank == 0) {
-        int ChisloCheredovaniy1, ChisloCheredovaniy2;
         local_vec = getRandomVector(count_size_vector);
         global_vec = local_vec;
         global_vec[0] = 1;
         global_vec[1] = -1;
-        ChisloCheredovaniy2 = getParallelOperations(global_vec, global_vec.size());
-        ChisloCheredovaniy1 = getParallelOperations(local_vec, local_vec.size());
-        ASSERT_GT(ChisloCheredovaniy2, ChisloCheredovaniy1);
+    }
+    ChisloCheredovaniy2 = getParallelOperations(global_vec, global_vec.size());
+    ChisloCheredovaniy1 = getParallelOperations(local_vec, local_vec.size());
+    if (rank == 0) {
+         ASSERT_GT(ChisloCheredovaniy2, ChisloCheredovaniy1);
     }
 }
 int main(int argc, char** argv) {
