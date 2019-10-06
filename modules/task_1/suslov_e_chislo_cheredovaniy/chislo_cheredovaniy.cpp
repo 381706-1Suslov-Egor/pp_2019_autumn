@@ -40,8 +40,7 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
     std::vector<int> local_vec(full);
     if (rank == 0) {
         local_vec = std::vector<int>(global_vec.begin(), global_vec.begin() + full + ostatok_elem);
-    }
-    else {
+    } else {
         MPI_Status status;
         MPI_Recv(&local_vec[0], full, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
     }
@@ -54,8 +53,7 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
             v[n] = global_vec[ostatok_elem - 1 + n * full];
             MPI_Send(&v[n], 1, MPI_INT, n, 0, MPI_COMM_WORLD);
         }
-    }
-    else {
+    } else {
         int v;
         MPI_Status status;
         MPI_Recv(&v, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
