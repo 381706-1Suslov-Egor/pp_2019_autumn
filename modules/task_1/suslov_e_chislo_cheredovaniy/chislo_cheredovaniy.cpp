@@ -39,6 +39,7 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
     }
     std::vector<int> local_vec(full);
     if (rank == 0) {
+        local_vec.resize(full + ostatok_elem);
         local_vec = std::vector<int>(global_vec.begin(), global_vec.begin() + full + ostatok_elem);
     } else {
         MPI_Status status;
