@@ -91,7 +91,7 @@ TEST(Chislo_Cheredovaniy_Vector, Test_sravneniye_chisla_cheredovaniy) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec, local_vec;
-    const int count_size_vector = 201;
+    const int count_size_vector = 101;
     int ChisloCheredovaniy1, ChisloCheredovaniy2;
     if (rank == 0) {
         local_vec = getRandomVector(count_size_vector);

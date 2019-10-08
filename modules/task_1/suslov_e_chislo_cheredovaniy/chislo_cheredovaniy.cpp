@@ -7,21 +7,20 @@
 #include <algorithm>
 #include "../../../modules/task_1/suslov_e_chislo_cheredovaniy/chislo_cheredovaniy.h"
 
-std::vector<int> getRandomVector(int sz) {
+std::vector<int> getRandomVector(int size_v) {
     std::mt19937 gen;
     gen.seed(static_cast<unsigned int>(time(0)));
-    std::vector<int> vec(sz);
-    for (int  i = 0; i < sz; i++) { vec[i] = gen() % 100 - 50; }
-    return vec;
+    std::vector<int> vect(size_v);
+    for (int  i = 0; i < size_v; i++) { vect[i] = gen() % 100 - 50; }
+    return vect;
 }
 
 int getChisloCheredovaniy(std::vector<int> vector, int count_size_vector) {
     if (count_size_vector < 2) {
         return 0;
     }
-    const int  size = vector.size();
     int chislo_cheredovaniy = 0;
-    for (int c = 1; c < size; c++) {
+    for (int c = 1; c < count_size_vector; c++) {
         if (vector[c] * vector[ c - 1 ] < 0) {
              chislo_cheredovaniy++;
         }
@@ -74,11 +73,7 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
         }
     }
     MPI_Reduce(&local_chislo_cheredovaniy, &global_chislo_cheredovaniy, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
-    if (rank == 0) {
         return global_chislo_cheredovaniy;
-    } else {
-        return 0;
-    }
 }
 
 
