@@ -4,7 +4,7 @@
 #include <vector>
 #include "../../../modules/task_1/suslov_e_chislo_cheredovaniy/chislo_cheredovaniy.h"
 
-TEST(Parallel_Operations_MPI, Test_on_primere_chetnom) {
+TEST(Chislo_Cheredovaniy_Vector, Test_on_primere_chetnom) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec = { 2, -1, -2, -3, 5, 6, 7, 8 };
@@ -14,7 +14,7 @@ TEST(Parallel_Operations_MPI, Test_on_primere_chetnom) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_on_primere_nechetnom) {
+TEST(Chislo_Cheredovaniy_Vector, Test_on_primere_nechetnom) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec = { 2, -1, -2, -3, 5, 6, 7, 8, 9 };
@@ -24,7 +24,7 @@ TEST(Parallel_Operations_MPI, Test_on_primere_nechetnom) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_on_one_elem) {
+TEST(Chislo_Cheredovaniy_Vector, Test_on_one_elem) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec = { 2 };
@@ -34,7 +34,7 @@ TEST(Parallel_Operations_MPI, Test_on_one_elem) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_on_two_elem_o) {
+TEST(Chislo_Cheredovaniy_Vector, Test_on_two_elem_o) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec = { 2, 1 };
@@ -44,7 +44,7 @@ TEST(Parallel_Operations_MPI, Test_on_two_elem_o) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_on_two_elem_l) {
+TEST(Chislo_Cheredovaniy_Vector, Test_on_two_elem_l) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec = { 2, -1 };
@@ -54,30 +54,30 @@ TEST(Parallel_Operations_MPI, Test_on_two_elem_l) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_on_rand_primere_chetnom) {
-    int rank, ChisloCheredovaniy;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    std::vector<int> global_vec;
-    const int count_size_vector = 100;
-    if (rank == 0) {
-        global_vec = getRandomVector(count_size_vector);
-    }
-    ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
-    if (rank == 0) {
-        int TrueChisloCheredovaniy = 0;
-        TrueChisloCheredovaniy = getChisloCheredovaniy(global_vec, global_vec.size());
-        ASSERT_EQ(ChisloCheredovaniy, TrueChisloCheredovaniy);
-    }
-}
-
-TEST(Parallel_Operations_MPI, Test_on_rand_primere_nechetnom) {
+TEST(Chislo_Cheredovaniy_Vector, Test_on_rand_primere_nechetnom) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 101;
+    const int size_vector = 101;
     int ChisloCheredovaniy;
     if (rank == 0) {
-        global_vec = getRandomVector(count_size_vector);
+        global_vec = getRandomVector(size_vector);
+    }
+    ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
+    if (rank == 0) {
+        int TrueChisloCheredovaniy = 0;
+        TrueChisloCheredovaniy = getChisloCheredovaniy(global_vec, global_vec.size());
+        ASSERT_EQ(ChisloCheredovaniy, TrueChisloCheredovaniy);
+    }
+}
+TEST(Chislo_Cheredovaniy_Vector, Test_on_rand_primere_chetnom) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> global_vec;
+    const int size_vector = 100;
+    int ChisloCheredovaniy;
+    if (rank == 0) {
+        global_vec = getRandomVector(size_vector);
     }
     ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
     if (rank == 0) {
@@ -87,14 +87,14 @@ TEST(Parallel_Operations_MPI, Test_on_rand_primere_nechetnom) {
     }
 }
 
-TEST(Parallel_Operations_MPI, Test_sravneniye_chisla_cheredovaniy) {
+TEST(Chislo_Cheredovaniy_Vector, Test_sravneniye_chisla_cheredovaniy) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec, local_vec;
-    const int count_size_vector = 100;
+    const int size_vector = 101;
     int ChisloCheredovaniy1, ChisloCheredovaniy2;
     if (rank == 0) {
-        local_vec = getRandomVector(count_size_vector);
+        local_vec = getRandomVector(size_vector);
         global_vec = local_vec;
     }
     ChisloCheredovaniy2 = getParallelOperations(global_vec, global_vec.size());

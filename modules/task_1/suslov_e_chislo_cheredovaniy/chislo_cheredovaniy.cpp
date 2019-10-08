@@ -10,9 +10,9 @@
 std::vector<int> getRandomVector(int size) {
     std::mt19937 gen;
     gen.seed(static_cast<unsigned int>(time(0)));
-    std::vector<int> vec(size, 0);
-    for (int  i = 0; i < size; i++) { vec[i] = gen() % 100 - 50; }
-    return vec;
+    std::vector<int> vect(size, 0);
+    for (int  i = 0; i < size; i++) { vect[i] = gen() % 100 - 50; }
+    return vect;
 }
 
 int getChisloCheredovaniy(std::vector<int> vector, int count_size_vector) {
