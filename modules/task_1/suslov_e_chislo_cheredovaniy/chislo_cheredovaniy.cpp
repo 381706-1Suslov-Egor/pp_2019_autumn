@@ -34,7 +34,7 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank == 0) {
-        if (count_size_vector < 16) {
+        if (count_size_vector < 100) {
             getChisloCheredovaniy(global_vec, count_size_vector);
         }
     }
