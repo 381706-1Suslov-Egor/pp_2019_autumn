@@ -22,7 +22,6 @@ int getChisloCheredovaniy(std::vector<int> vector, int count_size_vector) {
     const int  size = vector.size();
     int chislo_cheredovaniy = 0;
     for (int c = 1; c < size; c++) {
-
         if (vector[c] * vector[ c - 1 ] < 0) {
              chislo_cheredovaniy++;
         }
