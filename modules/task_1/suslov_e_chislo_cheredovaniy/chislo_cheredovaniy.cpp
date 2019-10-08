@@ -7,12 +7,14 @@
 #include <algorithm>
 #include "../../../modules/task_1/suslov_e_chislo_cheredovaniy/chislo_cheredovaniy.h"
 
-std::vector<int> getRandomVector(int size) {
+std::vector<int> getRandomVector(int sz) {
     std::mt19937 gen;
     gen.seed(static_cast<unsigned int>(time(0)));
-    std::vector<int> vect(size, 0);
-    for (int  i = 0; i < size; i++) { vect[i] = gen() % 100 - 50; }
-    return vect;
+    std::vector<int> vec(sz);
+    for (int  i = 0; i < sz; i++) { 
+        vec[i] = gen() % 100 - 50; 
+    }
+    return vec;
 }
 
 int getChisloCheredovaniy(std::vector<int> vector, int count_size_vector) {
