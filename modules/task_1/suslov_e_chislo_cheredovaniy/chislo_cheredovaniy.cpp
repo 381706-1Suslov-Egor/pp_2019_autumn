@@ -39,7 +39,6 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
         } else {
             return 0;
         }
-
     }
     const int full = count_size_vector / size;
     const int ostatok_elem = count_size_vector % size;
