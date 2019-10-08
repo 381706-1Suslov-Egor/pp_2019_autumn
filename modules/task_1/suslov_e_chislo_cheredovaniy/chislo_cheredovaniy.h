@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-std::vector<int> getRandomVector(int  sz);
+std::vector<int> getRandomVector(int sz);
 int getChisloCheredovaniy(std::vector<int> global_vec, int count_size_vector);
 int getParallelOperations(std::vector<int> global_vec, int count_size_vector);
 
