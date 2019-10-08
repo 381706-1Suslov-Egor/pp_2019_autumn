@@ -24,6 +24,36 @@ TEST(Parallel_Operations_MPI, Test_on_primere_nechetnom) {
     }
 }
 
+TEST(Parallel_Operations_MPI, Test_on_one_elem) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> global_vec = { 2 };
+    int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
+    if (rank == 0) {
+        ASSERT_EQ(ChisloCheredovaniy, 0);
+    }
+}
+
+TEST(Parallel_Operations_MPI, Test_on_two_elem_o) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> global_vec = { 2, 1 };
+    int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
+    if (rank == 0) {
+        ASSERT_EQ(ChisloCheredovaniy, 0);
+    }
+}
+
+TEST(Parallel_Operations_MPI, Test_on_two_elem_l) {
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    std::vector<int> global_vec = { 2, -1 };
+    int ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
+    if (rank == 0) {
+        ASSERT_EQ(ChisloCheredovaniy, 1);
+    }
+}
+
 TEST(Parallel_Operations_MPI, Test_on_rand_primere_chetnom) {
     int rank, ChisloCheredovaniy;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
