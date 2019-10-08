@@ -22,9 +22,10 @@ int getChisloCheredovaniy(std::vector<int> vector, int count_size_vector) {
     const int  size = vector.size();
     int chislo_cheredovaniy = 0;
     for (int c = 1; c < size; c++) {
+
         if (vector[c] * vector[ c - 1 ] < 0) {
              chislo_cheredovaniy++;
-         }
+        }
     }
     return chislo_cheredovaniy;
 }
@@ -55,7 +56,7 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
     int local_chislo_cheredovaniy = 0;
     if (rank == 0) {
         local_chislo_cheredovaniy += getChisloCheredovaniy(local_vec, local_vec.size());
-        std::vector<int> v(size, 0);
+        std::vector<int> v(size);
         for (int n = 1; n < size; n++) {
             v[n] = global_vec[ostatok_elem - 1 + n * full];
             MPI_Send(&v[n], 1, MPI_INT, n, 0, MPI_COMM_WORLD);
