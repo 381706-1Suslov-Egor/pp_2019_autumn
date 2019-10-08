@@ -63,7 +63,7 @@ TEST(Chislo_Cheredovaniy_Vector, Test_on_rand_primere_nechetnom) {
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
-    ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
+    ChisloCheredovaniy = getParallelOperations(global_vec, count_size_vector);
     if (rank == 0) {
         int TrueChisloCheredovaniy = 0;
         TrueChisloCheredovaniy = getChisloCheredovaniy(global_vec, global_vec.size());
@@ -79,7 +79,7 @@ TEST(Chislo_Cheredovaniy_Vector, Test_on_rand_primere_chetnom) {
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
     }
-    ChisloCheredovaniy = getParallelOperations(global_vec, global_vec.size());
+    ChisloCheredovaniy = getParallelOperations(global_vec, count_size_vector);
     if (rank == 0) {
         int TrueChisloCheredovaniy = 0;
         TrueChisloCheredovaniy = getChisloCheredovaniy(global_vec, global_vec.size());
@@ -97,8 +97,8 @@ TEST(Chislo_Cheredovaniy_Vector, Test_sravneniye_chisla_cheredovaniy) {
         local_vec = getRandomVector(count_size_vector);
         global_vec = local_vec;
     }
-    ChisloCheredovaniy2 = getParallelOperations(global_vec, global_vec.size());
-    ChisloCheredovaniy1 = getParallelOperations(local_vec, local_vec.size());
+    ChisloCheredovaniy2 = getParallelOperations(global_vec, count_size_vector);
+    ChisloCheredovaniy1 = getParallelOperations(local_vec, count_size_vector);
     if (rank == 0) {
         ASSERT_EQ(ChisloCheredovaniy2, ChisloCheredovaniy1);
     }
