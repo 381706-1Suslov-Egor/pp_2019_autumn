@@ -15,7 +15,7 @@ std::vector<int> getRandomVector(int sz) {
     return vec;
 }
 
-int getChisloCheredovaniy(std::vector<int> vector,int count_size_vector) {
+int getChisloCheredovaniy(std::vector<int> vector, int count_size_vector) {
     if (count_size_vector < 2) {
         return 0;
     }
@@ -29,7 +29,7 @@ int getChisloCheredovaniy(std::vector<int> vector,int count_size_vector) {
     return chislo_cheredovaniy;
 }
 
-int getParallelOperations(std::vector<int> global_vec,int count_size_vector) {
+int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
     if (count_size_vector < 100) {
         return getChisloCheredovaniy(global_vec, count_size_vector);
     }
