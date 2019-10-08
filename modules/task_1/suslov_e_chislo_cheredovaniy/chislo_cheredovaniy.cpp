@@ -73,9 +73,7 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
             local_chislo_cheredovaniy += 1;
         }
     }
-    MPI_Op oper_on_all_proc;
-    oper_on_all_proc = MPI_SUM;
-    MPI_Reduce(&local_chislo_cheredovaniy, &global_chislo_cheredovaniy, 1, MPI_INT, oper_on_all_proc, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&local_chislo_cheredovaniy, &global_chislo_cheredovaniy, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     if (rank == 0) {
         return global_chislo_cheredovaniy;
     } else {
