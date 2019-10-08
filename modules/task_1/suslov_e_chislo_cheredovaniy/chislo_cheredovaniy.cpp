@@ -30,7 +30,7 @@ int getChisloCheredovaniy(std::vector<int> vector, int count_size_vector) {
 }
 
 int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
-    if (count_size_vector < 16) {
+    if (count_size_vector < 100) {
         return getChisloCheredovaniy(global_vec, count_size_vector);
     }
     int size, rank;
