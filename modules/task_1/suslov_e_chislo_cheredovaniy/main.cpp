@@ -74,7 +74,7 @@ TEST(Chislo_Cheredovaniy_Vector, Test_on_rand_primere_chetnom) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec;
-    const int count_size_vector = 100;
+    const int count_size_vector = 200;
     int ChisloCheredovaniy;
     if (rank == 0) {
         global_vec = getRandomVector(count_size_vector);
@@ -91,7 +91,7 @@ TEST(Chislo_Cheredovaniy_Vector, Test_sravneniye_chisla_cheredovaniy) {
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     std::vector<int> global_vec, local_vec;
-    const int count_size_vector = 101;
+    const int count_size_vector = 201;
     int ChisloCheredovaniy1, ChisloCheredovaniy2;
     if (rank == 0) {
         local_vec = getRandomVector(count_size_vector);
