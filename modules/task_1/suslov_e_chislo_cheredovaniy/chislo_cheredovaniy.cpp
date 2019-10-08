@@ -34,7 +34,12 @@ int getParallelOperations(std::vector<int> global_vec, int count_size_vector) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (count_size_vector < 100) {
-           return getChisloCheredovaniy(global_vec, count_size_vector);
+        if (rank == 0) {
+            return getChisloCheredovaniy(global_vec, count_size_vector);
+        } else {
+            return 0;
+        }
+
     }
     const int full = count_size_vector / size;
     const int ostatok_elem = count_size_vector % size;
