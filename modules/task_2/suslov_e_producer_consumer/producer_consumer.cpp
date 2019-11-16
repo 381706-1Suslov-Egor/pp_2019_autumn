@@ -63,8 +63,7 @@ int Consumer(int *buffer, int buffer_size, int rank_proc, int* resurce) {
             MPI_Send(&resurce, 1, MPI_INT, rank_proc, 1, MPI_COMM_WORLD);
         } else {
             if (rank == rank_proc) {
-                MPI_Status status;
-                MPI_Recv(&resurce, 1, MPI_INT, 0, 1, MPI_COMM_WORLD, &status);
+                MPI_Recv(&resurce, 1, MPI_INT, 0, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             }
         }
     }
@@ -88,8 +87,7 @@ int Producer(int *buffer, int buffer_size, int rank_proc, int resurce) {
     } else {
         if (rank == 0) {
             int resurce_for_bufer;
-            MPI_Status status;
-            MPI_Recv(&resurce_for_bufer, 1, MPI_INT, rank_proc, 0, MPI_COMM_WORLD, &status);
+            MPI_Recv(&resurce_for_bufer, 1, MPI_INT, rank_proc, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             for (int i = 0; i < buffer_size; i++) {
                 if (buffer[i] == -1) {
                     buffer[i] = resurce;
