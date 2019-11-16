@@ -4,6 +4,7 @@
 
 #include <vector>
 
+int* Create_dinamic_massiv_from_vector(std::vector<int> vec);
 int getPositive_elem(std::vector<int> vector, int count_size_vector);
 std::vector<int> getRandomVector(int  sz);
 int Consumer(std::vector<int> &buffer, int rank_proc, int &resurce);

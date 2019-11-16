@@ -54,8 +54,7 @@ int Consumer(std::vector<int> &buffer, int rank_proc, int &resurce) {
                 break;
             }
         }
-    }
-    else {
+    } else {
         if (rank == 0) {
             for (int i = 0; i < buffer_size; i++) {
                 if (buffer[i] != -1) {
@@ -66,8 +65,7 @@ int Consumer(std::vector<int> &buffer, int rank_proc, int &resurce) {
                 }
             }
             MPI_Send(&resurce, 1, MPI_INT, rank_proc, 1, MPI_COMM_WORLD);
-        }
-        else {
+        } else {
             if (rank == rank_proc) {
                 MPI_Status status;
                 MPI_Recv(&resurce, 1, MPI_INT, 0, 1, MPI_COMM_WORLD, &status);
@@ -94,8 +92,7 @@ int Producer(std::vector<int> &buffer, int rank_proc, int resurce) {
                 break;
             }
         }
-    }
-    else {
+    } else {
         if (rank == 0) {
             int resurce_for_bufer;
             MPI_Status status;
