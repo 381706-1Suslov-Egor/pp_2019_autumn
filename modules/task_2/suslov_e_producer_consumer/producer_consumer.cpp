@@ -43,13 +43,11 @@ int Consumer(int *buffer, int buffer_size, int rank_proc, int* resurce) {
     if (rank != 0 || rank != rank_proc) {
         MPI_Barrier(MPI_COMM_WORLD);
     }
-    int get_resurs = 0;
     if (size == 1 || rank_proc == 0) {
         for (int i = 0; i < buffer_size; i++) {
             if (buffer[i] != -1) {
                 *resurce = buffer[i];
                 buffer[i] = -1;
-                get_resurs = 1;
                 break;
             }
         }
@@ -59,7 +57,6 @@ int Consumer(int *buffer, int buffer_size, int rank_proc, int* resurce) {
                 if (buffer[i] != -1) {
                     *resurce = buffer[i];
                     buffer[i] = -1;
-                    get_resurs = 1;
                     break;
                 }
             }
@@ -81,12 +78,10 @@ int Producer(int *buffer, int buffer_size, int rank_proc, int resurce) {
     if (rank != 0 || rank != rank_proc) {
         MPI_Barrier(MPI_COMM_WORLD);
     }
-    int put_resurs = 0;
     if (size == 1 || rank_proc == 0) {
         for (int i = 0; i < buffer_size; i++) {
             if (buffer[i] == -1) {
                 buffer[i] = resurce;
-                put_resurs = 1;
                 break;
             }
         }
@@ -98,7 +93,6 @@ int Producer(int *buffer, int buffer_size, int rank_proc, int resurce) {
             for (int i = 0; i < buffer_size; i++) {
                 if (buffer[i] == -1) {
                     buffer[i] = resurce;
-                    put_resurs = 1;
                     break;
                 }
             }
