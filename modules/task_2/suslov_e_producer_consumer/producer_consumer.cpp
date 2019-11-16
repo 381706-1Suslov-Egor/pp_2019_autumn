@@ -53,14 +53,15 @@ int Consumer(int *buffer, int buffer_size, int rank_proc, int* resurce) {
         }
     } else {
         if (rank == 0) {
+            int temp_resurs;
             for (int i = 0; i < buffer_size; i++) {
                 if (buffer[i] != -1) {
-                    *resurce = buffer[i];
+                    temp_resurs = buffer[i];
                     buffer[i] = -1;
                     break;
                 }
             }
-            MPI_Send(&resurce, 1, MPI_INT, rank_proc, 1, MPI_COMM_WORLD);
+            MPI_Send(&temp_resurs, 1, MPI_INT, rank_proc, 1, MPI_COMM_WORLD);
         } else {
             if (rank == rank_proc) {
                 MPI_Recv(&resurce, 1, MPI_INT, 0, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
