@@ -8,21 +8,23 @@ TEST(Producer_Consumer, Producer_Test1) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    int kol_resursov = 2;
     std::vector<int> buffer(100,-1);
     std::vector<int> *A = &buffer;
-    std::vector<int> vec_resursov;
-    vec_resursov = getRandomVector(kol_resursov);
-    Producer(*A, vec_resursov);
-    if (size == 1) {
-        if (rank == 0) {
-            ASSERT_EQ(getPositive_elem(buffer, buffer.size()), kol_resursov);
+    int kol_resursov = 5;
+    if(size == 1) {
+        for (int i = 0; i < kol_resursov; i++) {
+            Producer(*A, rank, 1);
+        }
+        for (int i = 0; i < kol_resursov; i++) {
+            ASSERT_EQ(buffer[i], 1);
         }
     }
     else {
-        int vec_resursov_size = vec_resursov.size();
-        for (int i = 0; i < vec_resursov_size; i++) {
-            ASSERT_EQ(buffer[i], vec_resursov[i]);
+        for (int i = 0; i < kol_resursov; i++) {
+            Producer(*A, kol_resursov %(size-1), 2);
+        }
+        for (int i = 0; i < kol_resursov; i++) {
+            ASSERT_EQ(buffer[i], 2);
         }
     }
 }
@@ -30,39 +32,47 @@ TEST(Producer_Consumer, Producer_Test2) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    int kol_resursov = 2;
     std::vector<int> buffer(100, -1);
     std::vector<int> *A = &buffer;
-    std::vector<int> vec_resursov;
-    vec_resursov = getRandomVector(kol_resursov);
-    Producer(*A, vec_resursov);
-    if (rank == 0) {
-        ASSERT_EQ(getPositive_elem(buffer, buffer.size()), kol_resursov);
+    int kol_resursov = 10;
+    if (size == 1) {
+        for (int i = 0; i < kol_resursov; i++) {
+            Producer(*A, rank, 1);
+        }
+        for (int i = 0; i < kol_resursov; i++) {
+            ASSERT_EQ(buffer[i], 1);
+        }
+    }
+    else {
+        for (int i = 0; i < kol_resursov; i++) {
+            Producer(*A, kol_resursov % (size - 1), 2);
+        }
+        for (int i = 0; i < kol_resursov; i++) {
+            ASSERT_EQ(buffer[i], 2);
+        }
     }
 }
 TEST(Producer_Consumer, Producer_Test3) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    int kol_resursov = 2;
     std::vector<int> buffer(100, -1);
     std::vector<int> *A = &buffer;
-    std::vector<int> vec_resursov;
-    if (rank % 2 == 0) {
-        vec_resursov = getRandomVector(kol_resursov);
-    }
-    Producer(*A, vec_resursov);
+    int kol_resursov = 5;
     if (size == 1) {
-        if (rank == 0) {
-            int vec_resursov_size = vec_resursov.size();
-            for (int i = 0; i < vec_resursov_size; i++) {
-                ASSERT_EQ(buffer[i], vec_resursov[i]);
-            }
+        for (int i = 0; i < kol_resursov; i++) {
+            Producer(*A, rank, 1);
+        }
+        for (int i = 0; i < kol_resursov; i++) {
+            ASSERT_EQ(buffer[i], 1);
         }
     }
     else {
-        if (rank == 0) {
-            ASSERT_EQ(getPositive_elem(buffer, buffer.size()), size*2);
+        for (int i = 0; i < kol_resursov; i++) {
+            Producer(*A, kol_resursov % (size - 1), 2);
+        }
+        for (int i = 0; i < kol_resursov; i++) {
+            ASSERT_EQ(buffer[i], 2);
         }
     }
 }
@@ -70,71 +80,116 @@ TEST(Producer_Consumer, Consumer_Test1) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    int kol_resursov = 2;
     std::vector<int> buffer(100, -1);
     std::vector<int> *A = &buffer;
-    std::vector<int> vec_resursov_produce;
-    std::vector<int> vec_resursov_consume;
-    if (rank % 2 == 0) {
-        vec_resursov_produce = getRandomVector(kol_resursov);
-    }
-    Producer(*A, vec_resursov_produce);
-    if (rank % 2 == 1 || rank == 0) {
-        std::vector<int> vec_resursov_consume(kol_resursov, -1);
-    }
-    std::vector<int> *B = &vec_resursov_consume;
-    Consumer(*A, *B);
+    int kol_resursov = 5;
     if (size == 1) {
-        if (rank == 0) {
-            int vec_resursov_consume_size = vec_resursov_consume.size();
-            for (int i = 0; i < vec_resursov_consume_size; i++) {
-                ASSERT_EQ(vec_resursov_consume[i], vec_resursov_produce[i]);
-            }
+        for (int i = 0; i < kol_resursov; i++) {
+            Producer(*A, rank, 1);
+        }
+        std::vector<int> resurce_consume(kol_resursov, -1);
+        for (int i = 0; i < kol_resursov; i++) {
+            Consumer(*A, rank, resurce_consume[i]);
+            ASSERT_EQ(1, resurce_consume[i]);
         }
     }
     else {
-        if (rank == 1) {
-            ASSERT_EQ(getPositive_elem(buffer, buffer.size()), size * 2);
+        std::vector<int> resurce_consume(kol_resursov, -1);
+        for (int i = 0; i < kol_resursov; i++) {
+            Consumer(*A, 0, resurce_consume[i]);
+            ASSERT_EQ(1, resurce_consume[i]);
         }
+        
     }
 }
 TEST(Producer_Consumer, Consumer_Test2) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    int kol_resursov = 2;
     std::vector<int> buffer(100, -1);
     std::vector<int> *A = &buffer;
-    std::vector<int> vec_resursov_produce;
-    std::vector<int> vec_resursov_consume;
-    if (rank % 2 == 0) {
-        vec_resursov_produce = getRandomVector(kol_resursov);
-    }
-    Producer(*A, vec_resursov_produce);
-    if (rank % 2 == 1 || rank == 0) {
-        std::vector<int> vec_resursov_consume(kol_resursov,-1);
-    }
-    std::vector<int> *B = &vec_resursov_consume;
-    Consumer(*A, *B);
+    int kol_resursov = 10;
     if (size == 1) {
-        if (rank == 0) {
-            int vec_resursov_consume_size = vec_resursov_consume.size();
-            for (int i = 0; i < vec_resursov_consume_size; i++) {
-                ASSERT_EQ(vec_resursov_produce[i], vec_resursov_consume[i]);
-            }
+        for (int i = 0; i < kol_resursov; i++) {
+            Producer(*A, rank, 1);
+        }
+        std::vector<int> resurce_consume(kol_resursov, -1);
+        for (int i = 0; i < kol_resursov; i++) {
+            Consumer(*A, 0, resurce_consume[i]);
+            ASSERT_EQ(1, resurce_consume[i]);
         }
     }
     else {
-        if (size % 2 == 1) {
-
-            if (rank == 1) {
-                ASSERT_EQ(getPositive_elem(vec_resursov_consume, vec_resursov_consume.size()), kol_resursov);
+        if (rank == 1) {
+            for (int i = 0; i < kol_resursov; i++) {
+                Producer(*A, rank, 1);
             }
+        }
+        if (rank == 0) {
+            std::vector<int> resurce_consume(kol_resursov, -1);
+            for (int i = 0; i < kol_resursov; i++) {
+                Consumer(*A, 0, resurce_consume[i]);
+                ASSERT_EQ(1, resurce_consume[i]);
+            }
+        }
+
+    }
+}
+TEST(Producer_Consumer, Consumer_Test3) {
+    int rank, size;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    std::vector<int> buffer(100, -1);
+    std::vector<int> *A = &buffer;
+    int kol_resursov = 5;
+    if (size == 1) {
+        for (int i = 0; i < kol_resursov; i++) {
+            Producer(*A, rank, 1);
+        }
+        std::vector<int> resurce_consume(kol_resursov, -1);
+        for (int i = 0; i < kol_resursov; i++) {
+            Consumer(*A, 0, resurce_consume[i]);
+            ASSERT_EQ(1, resurce_consume[i]);
+        }
+    }
+    else {
+        for (int i = 0; i < kol_resursov; i++) {
+            Producer(*A, kol_resursov % (size - 1), 2);
+        }
+        for (int i = 0; i < kol_resursov; i++) {
+            ASSERT_EQ(buffer[i], 2);
         }
     }
 }
-
-
+TEST(Producer_Consumer, Producer_Consumer_Test1) {
+    int rank, size;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    std::vector<int> buffer(100, -1);
+    std::vector<int> *A = &buffer;
+    int kol_resursov = 5;
+    if (size == 1) {
+        for (int i = 0; i < kol_resursov; i++) {
+            Producer(*A, rank, 3);
+        }
+        std::vector<int> resurce_consume(kol_resursov, -1);
+        for (int i = 0; i < kol_resursov; i++) {
+            Consumer(*A, 0, resurce_consume[i]);
+            ASSERT_EQ(3, resurce_consume[i]);
+        }
+    }
+    else {
+        Producer(*A, rank, 3);
+        for (int i = 0; i < size; i++) {
+            ASSERT_EQ(buffer[i], 3);
+        }
+        std::vector<int> resurce_consume(kol_resursov, -1);
+        for (int i = 0; i < size; i++) {
+            Consumer(*A, 0, resurce_consume[i]);
+            ASSERT_EQ(3, resurce_consume[i]);
+        }
+    }
+}
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     MPI_Init(&argc, &argv);
