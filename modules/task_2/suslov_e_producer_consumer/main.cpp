@@ -14,7 +14,7 @@ TEST(Producer_Consumer, Producer_Test1) {
         buffer[i]=-1;
     }
     int kol_resursov = 5;
-    if(size == 1) {
+    if (size == 1) {
         for (int i = 0; i < kol_resursov; i++) {
             Producer(buffer, kol_elem_in_buffer, rank, 1);
         }
@@ -115,7 +115,6 @@ TEST(Producer_Consumer, Consumer_Test1) {
             Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
             ASSERT_EQ(1, resurce_consume[i]);
         }
-        
     }
 }
 
@@ -155,7 +154,6 @@ TEST(Producer_Consumer, Consumer_Test2) {
                 ASSERT_EQ(1, resurce_consume[i]);
             }
         }
-
     }
 }
 TEST(Producer_Consumer, Consumer_Test3) {
@@ -237,4 +235,5 @@ int main(int argc, char** argv) {
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
     return RUN_ALL_TESTS();
 }
+
 

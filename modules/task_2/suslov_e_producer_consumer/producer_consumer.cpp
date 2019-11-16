@@ -42,7 +42,7 @@ int Consumer(int *buffer, int buffer_size, int rank_proc, int* resurce) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     if (rank != 0 || rank != rank_proc) {
         MPI_Barrier(MPI_COMM_WORLD);
-    };
+    }
     int get_resurs = 0;
     if (size == 1 || rank_proc == 0) {
         for (int i = 0; i < buffer_size; i++) {
@@ -102,8 +102,7 @@ int Producer(int *buffer, int buffer_size, int rank_proc, int resurce) {
                     break;
                 }
             }
-        }
-        else {
+        } else {
             if (rank == rank_proc) {
                 MPI_Send(&resurce, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
             }
