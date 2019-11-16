@@ -8,19 +8,22 @@ TEST(Producer_Consumer, Producer_Test1) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    std::vector<int> buffer(100, -1);
-    std::vector<int> *A = &buffer;
+    int kol_elem_in_buffer = 100;
+    int *buffer = new int[kol_elem_in_buffer];
+    for (int i = 0; i < kol_elem_in_buffer; i++) {
+        buffer[i]=-1;
+    }
     int kol_resursov = 5;
     if(size == 1) {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(*A, rank, 1);
+            Producer(buffer, kol_elem_in_buffer, rank, 1);
         }
         for (int i = 0; i < kol_resursov; i++) {
             ASSERT_EQ(buffer[i], 1);
         }
     } else {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(*A, kol_resursov %(size-1), 2);
+            Producer(buffer, kol_elem_in_buffer, 2, 2);
         }
         for (int i = 0; i < kol_resursov; i++) {
             ASSERT_EQ(buffer[i], 2);
@@ -32,19 +35,22 @@ TEST(Producer_Consumer, Producer_Test2) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    std::vector<int> buffer(100, -1);
-    std::vector<int> *A = &buffer;
+    int kol_elem_in_buffer = 100;
+    int *buffer = new int[kol_elem_in_buffer];
+    for (int i = 0; i < kol_elem_in_buffer; i++) {
+        buffer[i] = -1;
+    }
     int kol_resursov = 10;
     if (size == 1) {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(*A, rank, 1);
+            Producer(buffer, kol_elem_in_buffer, rank, 1);
         }
         for (int i = 0; i < kol_resursov; i++) {
             ASSERT_EQ(buffer[i], 1);
         }
     } else {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(*A, kol_resursov % (size - 1), 2);
+            Producer(buffer, kol_elem_in_buffer, kol_resursov % (size - 1), 2);
         }
         for (int i = 0; i < kol_resursov; i++) {
             ASSERT_EQ(buffer[i], 2);
@@ -56,19 +62,22 @@ TEST(Producer_Consumer, Producer_Test3) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    std::vector<int> buffer(100, -1);
-    std::vector<int> *A = &buffer;
+    int kol_elem_in_buffer = 100;
+    int *buffer = new int[kol_elem_in_buffer];
+    for (int i = 0; i < kol_elem_in_buffer; i++) {
+        buffer[i] = -1;
+    }
     int kol_resursov = 5;
     if (size == 1) {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(*A, rank, 1);
+            Producer(buffer, kol_elem_in_buffer, rank, 1);
         }
         for (int i = 0; i < kol_resursov; i++) {
             ASSERT_EQ(buffer[i], 1);
         }
     } else {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(*A, kol_resursov % (size - 1), 2);
+            Producer(buffer, kol_elem_in_buffer, kol_resursov % (size - 1), 2);
         }
         for (int i = 0; i < kol_resursov; i++) {
             ASSERT_EQ(buffer[i], 2);
@@ -80,22 +89,30 @@ TEST(Producer_Consumer, Consumer_Test1) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    std::vector<int> buffer(100, -1);
-    std::vector<int> *A = &buffer;
+    int kol_elem_in_buffer = 100;
+    int *buffer = new int[kol_elem_in_buffer];
+    for (int i = 0; i < kol_elem_in_buffer; i++) {
+        buffer[i] = -1;
+    }
     int kol_resursov = 5;
     if (size == 1) {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(*A, rank, 1);
+            Producer(buffer, kol_elem_in_buffer, rank, 1);
         }
-        std::vector<int> resurce_consume(kol_resursov, -1);
+        int *resurce_consume = new int[kol_elem_in_buffer];
+        for (int i = 0; i < kol_elem_in_buffer; i++) {
+            resurce_consume[i] = -1;
+        }
         for (int i = 0; i < kol_resursov; i++) {
-            Consumer(*A, rank, resurce_consume[i]);
+            Consumer(buffer, kol_elem_in_buffer, rank, &resurce_consume[i]);
             ASSERT_EQ(1, resurce_consume[i]);
         }
     } else {
-        std::vector<int> resurce_consume(kol_resursov, -1);
+        std::vector<int> resurce_consume1(kol_resursov, -1);
+        int *resurce_consume;
+        resurce_consume = Create_dinamic_massiv_from_vector(resurce_consume1);
         for (int i = 0; i < kol_resursov; i++) {
-            Consumer(*A, 0, resurce_consume[i]);
+            Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
             ASSERT_EQ(1, resurce_consume[i]);
         }
         
@@ -106,28 +123,35 @@ TEST(Producer_Consumer, Consumer_Test2) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    std::vector<int> buffer(100, -1);
-    std::vector<int> *A = &buffer;
+    int kol_elem_in_buffer = 100;
+    int *buffer = new int[kol_elem_in_buffer];
+    for (int i = 0; i < kol_elem_in_buffer; i++) {
+        buffer[i] = -1;
+    }
     int kol_resursov = 10;
     if (size == 1) {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(*A, rank, 1);
+            Producer(buffer, kol_elem_in_buffer, rank, 1);
         }
-        std::vector<int> resurce_consume(kol_resursov, -1);
+        std::vector<int> resurce_consume1(kol_resursov, -1);
+        int *resurce_consume;
+        resurce_consume = Create_dinamic_massiv_from_vector(resurce_consume1);
         for (int i = 0; i < kol_resursov; i++) {
-            Consumer(*A, 0, resurce_consume[i]);
+            Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
             ASSERT_EQ(1, resurce_consume[i]);
         }
     } else {
         if (rank == 1) {
             for (int i = 0; i < kol_resursov; i++) {
-                Producer(*A, rank, 1);
+                Producer(buffer, kol_elem_in_buffer, rank, 1);
             }
         }
         if (rank == 0) {
-            std::vector<int> resurce_consume(kol_resursov, -1);
+            std::vector<int> resurce_consume1(kol_resursov, -1);
+            int *resurce_consume;
+            resurce_consume = Create_dinamic_massiv_from_vector(resurce_consume1);
             for (int i = 0; i < kol_resursov; i++) {
-                Consumer(*A, 0, resurce_consume[i]);
+                Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
                 ASSERT_EQ(1, resurce_consume[i]);
             }
         }
@@ -138,21 +162,26 @@ TEST(Producer_Consumer, Consumer_Test3) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    std::vector<int> buffer(100, -1);
-    std::vector<int> *A = &buffer;
+    int kol_elem_in_buffer = 100;
+    int *buffer = new int[kol_elem_in_buffer];
+    for (int i = 0; i < kol_elem_in_buffer; i++) {
+        buffer[i] = -1;
+    }
     int kol_resursov = 5;
     if (size == 1) {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(*A, rank, 1);
+            Producer(buffer, kol_elem_in_buffer, rank, 1);
         }
-        std::vector<int> resurce_consume(kol_resursov, -1);
+        std::vector<int> resurce_consume1(kol_resursov, -1);
+        int *resurce_consume;
+        resurce_consume = Create_dinamic_massiv_from_vector(resurce_consume1);
         for (int i = 0; i < kol_resursov; i++) {
-            Consumer(*A, 0, resurce_consume[i]);
+            Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
             ASSERT_EQ(1, resurce_consume[i]);
         }
     } else {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(*A, kol_resursov % (size - 1), 2);
+            Producer(buffer, kol_elem_in_buffer, kol_resursov % (size - 1), 2);
         }
         for (int i = 0; i < kol_resursov; i++) {
             ASSERT_EQ(buffer[i], 2);
@@ -163,26 +192,33 @@ TEST(Producer_Consumer, Producer_Consumer_Test1) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    std::vector<int> buffer(100, -1);
-    std::vector<int> *A = &buffer;
+    int kol_elem_in_buffer = 100;
+    int *buffer = new int[kol_elem_in_buffer];
+    for (int i = 0; i < kol_elem_in_buffer; i++) {
+        buffer[i] = -1;
+    }
     int kol_resursov = 5;
     if (size == 1) {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(*A, rank, 3);
+            Producer(buffer, kol_elem_in_buffer, rank, 3);
         }
-        std::vector<int> resurce_consume(kol_resursov, -1);
+        std::vector<int> resurce_consume1(kol_resursov, -1);
+        int *resurce_consume;
+        resurce_consume = Create_dinamic_massiv_from_vector(resurce_consume1);
         for (int i = 0; i < kol_resursov; i++) {
-            Consumer(*A, 0, resurce_consume[i]);
+            Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
             ASSERT_EQ(3, resurce_consume[i]);
         }
     } else {
-        Producer(*A, rank, 3);
+        Producer(buffer, kol_elem_in_buffer, rank, 3);
         for (int i = 0; i < size; i++) {
             ASSERT_EQ(buffer[i], 3);
         }
-        std::vector<int> resurce_consume(kol_resursov, -1);
+        std::vector<int> resurce_consume1(kol_resursov, -1);
+        int *resurce_consume;
+        resurce_consume = Create_dinamic_massiv_from_vector(resurce_consume1);
         for (int i = 0; i < size; i++) {
-            Consumer(*A, 0, resurce_consume[i]);
+            Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
             ASSERT_EQ(3, resurce_consume[i]);
         }
     }
