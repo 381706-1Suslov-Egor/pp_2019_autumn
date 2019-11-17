@@ -123,7 +123,7 @@ TEST(Producer_Consumer, Consumer_Test1) {
     }
 }
 
-TEST(Producer_Consumer, Consumer_Test2) {
+TEST(Producer_Consumer, Producer_Consumer_Test1) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
@@ -141,7 +141,7 @@ TEST(Producer_Consumer, Consumer_Test2) {
         int *resurce_consume;
         resurce_consume = Create_dinamic_massiv_from_vector(resurce_consume1);
         for (int i = 0; i < kol_resursov; i++) {
-            Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
+            Consumer(buffer, kol_elem_in_buffer, rank, &resurce_consume[i]);
             ASSERT_EQ(1, resurce_consume[i]);
         }
     } else {
@@ -152,16 +152,16 @@ TEST(Producer_Consumer, Consumer_Test2) {
         int *resurce_consume;
         resurce_consume = Create_dinamic_massiv_from_vector(resurce_consume1);
         for (int i = 0; i < kol_resursov; i++) {
-            Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
+            Consumer(buffer, kol_elem_in_buffer, 1, &resurce_consume[i]);
         }
-        if (rank == 0) {
+        if (rank == 1) {
             for (int i = 0; i < kol_resursov; i++) {
                 ASSERT_EQ(3, resurce_consume[i]);
             }
         }
     }
 }
-TEST(Producer_Consumer, Consumer_Test3) {
+TEST(Producer_Consumer, Producer_Consumer_Test2) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
@@ -205,7 +205,7 @@ TEST(Producer_Consumer, Consumer_Test3) {
     }
 }
 
-TEST(Producer_Consumer, Producer_Consumer_Test1) {
+TEST(Producer_Consumer, Producer_Consumer_Test3) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);

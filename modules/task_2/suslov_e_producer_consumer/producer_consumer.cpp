@@ -61,14 +61,18 @@ int Consumer(int *buffer, int buffer_size, int rank_proc, int* resurce) {
                     break;
                 }
             }
-            MPI_Send(&temp_resurs, 1, MPI_INT, rank_proc, 1, MPI_COMM_WORLD);
+            MPI_Send(&temp_resurs, 1, MPI_INT, rank_proc, 0, MPI_COMM_WORLD);
         } else {
             if (rank == rank_proc) {
-                MPI_Recv(&resurce, 1, MPI_INT, 0, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                int temp_resurs;
+                MPI_Recv(&temp_resurs, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                *resurce = temp_resurs;
             }
         }
     }
-    MPI_Barrier(MPI_COMM_WORLD);
+    if (rank == rank_proc || rank == 0) {
+        MPI_Barrier(MPI_COMM_WORLD);
+    }
     return 0;
 }
 int Producer(int *buffer, int buffer_size, int rank_proc, int resurce) {
@@ -101,6 +105,8 @@ int Producer(int *buffer, int buffer_size, int rank_proc, int resurce) {
             }
         }
     }
-    MPI_Barrier(MPI_COMM_WORLD);
+    if (rank == rank_proc || rank == 0) {
+        MPI_Barrier(MPI_COMM_WORLD);
+    }
     return 0;
 }
