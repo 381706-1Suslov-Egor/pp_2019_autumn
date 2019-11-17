@@ -180,7 +180,8 @@ TEST(Producer_Consumer, Consumer_Test3) {
             Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
             ASSERT_EQ(1, resurce_consume[i]);
         }
-    } else {
+    }
+    else {
         for (int i = 0; i < kol_resursov; i++) {
             Producer(buffer, kol_elem_in_buffer, 1, 5);
         }
@@ -205,7 +206,7 @@ TEST(Producer_Consumer, Producer_Consumer_Test1) {
     for (int i = 0; i < kol_elem_in_buffer; i++) {
         buffer[i] = -1;
     }
-    int kol_resursov = 5;
+    int kol_resursov = 7;
     if (size == 1) {
         for (int i = 0; i < kol_resursov; i++) {
             Producer(buffer, kol_elem_in_buffer, rank, i);
