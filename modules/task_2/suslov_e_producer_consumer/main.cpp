@@ -180,8 +180,7 @@ TEST(Producer_Consumer, Consumer_Test3) {
             Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
             ASSERT_EQ(1, resurce_consume[i]);
         }
-    }
-    else {
+    } else {
         for (int i = 0; i < kol_resursov; i++) {
             Producer(buffer, kol_elem_in_buffer, 1, 5);
         }
