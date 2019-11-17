@@ -146,7 +146,7 @@ TEST(Producer_Consumer, Consumer_Test2) {
         }
     } else {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(buffer, kol_elem_in_buffer, size - 1, 3);
+            Producer(buffer, kol_elem_in_buffer, 1, 3);
         }
         std::vector<int> resurce_consume1(kol_resursov, -1);
         int *resurce_consume;
