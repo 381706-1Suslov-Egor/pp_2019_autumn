@@ -22,12 +22,14 @@ TEST(Producer_Consumer, Producer_Test1) {
             ASSERT_EQ(buffer[i], 1);
         }
     } else {
-            Producer(buffer, kol_elem_in_buffer, rank, 2);
-            if (rank == 0) {
-                for (int i = 0; i < size; i++) {
-                    ASSERT_EQ(buffer[i], 2);
-                }
+        for (int i = 0; i < size; i++) {
+            Producer(buffer, kol_elem_in_buffer, 1, 2);
+        }
+        if (rank == 0) {
+            for (int i = 0; i < size; i++) {
+                ASSERT_EQ(buffer[i], 2);
             }
+        }
     }
 }
 
@@ -50,7 +52,7 @@ TEST(Producer_Consumer, Producer_Test2) {
         }
     } else {
         for (int i = 0; i < kol_resursov; i++) {
-            Producer(buffer, kol_elem_in_buffer, kol_resursov % (size - 1), 2);
+            Producer(buffer, kol_elem_in_buffer, 1, 2);
         }
         if (rank == 0) {
             for (int i = 0; i < size; i++) {
@@ -80,7 +82,7 @@ TEST(Producer_Consumer, Producer_Test3) {
             }
         }
     } else {
-        Producer(buffer, kol_elem_in_buffer, rank, 2);
+        Producer(buffer, kol_elem_in_buffer, 1, 2);
         if (rank == 0) {
             for (int i = 0; i < kol_resursov; i++) {
                 ASSERT_EQ(buffer[i], 2);
@@ -108,7 +110,7 @@ TEST(Producer_Consumer, Consumer_Test1) {
             resurce_consume[i] = -1;
         }
         for (int i = 0; i < kol_resursov; i++) {
-            Consumer(buffer, kol_elem_in_buffer, rank, &resurce_consume[i]);
+            Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
             ASSERT_EQ(1, resurce_consume[i]);
         }
     } else {
@@ -143,14 +145,14 @@ TEST(Producer_Consumer, Consumer_Test2) {
             ASSERT_EQ(1, resurce_consume[i]);
         }
     } else {
-        for (int i = 0; i < kol_resursov/size; i++) {
-            Producer(buffer, kol_elem_in_buffer, rank, 1);
+        for (int i = 0; i < kol_resursov; i++) {
+            Producer(buffer, kol_elem_in_buffer, 1, 1);
         }
         if (rank == 0) {
-            std::vector<int> resurce_consume1(kol_resursov / size, -1);
+            std::vector<int> resurce_consume1(kol_resursov, -1);
             int *resurce_consume;
             resurce_consume = Create_dinamic_massiv_from_vector(resurce_consume1);
-            for (int i = 0; i < kol_resursov / size; i++) {
+            for (int i = 0; i < kol_resursov; i++) {
                 Consumer(buffer, kol_elem_in_buffer, 0, &resurce_consume[i]);
                 ASSERT_EQ(1, resurce_consume[i]);
             }
@@ -220,7 +222,7 @@ TEST(Producer_Consumer, Producer_Consumer_Test1) {
     } else {
         if (rank == 1|| rank == 0) {
             for (int i = 0; i < kol_resursov; i++) {
-                Producer(buffer, kol_elem_in_buffer, rank, i);
+                Producer(buffer, kol_elem_in_buffer, 0, i);
             }
         }
         if (rank == 0) {
