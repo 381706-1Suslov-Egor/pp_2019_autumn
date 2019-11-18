@@ -40,9 +40,6 @@ int Consumer(int *buffer, int buffer_size, int rank_proc, int* resurce) {
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if (rank != 0 || rank != rank_proc) {
-        MPI_Barrier(MPI_COMM_WORLD);
-    }
     if (size == 1 || rank_proc == 0) {
         for (int i = 0; i < buffer_size; i++) {
             if (buffer[i] != -1) {
@@ -70,18 +67,13 @@ int Consumer(int *buffer, int buffer_size, int rank_proc, int* resurce) {
             }
         }
     }
-    if (rank == rank_proc || rank == 0) {
-        MPI_Barrier(MPI_COMM_WORLD);
-    }
+    MPI_Barrier(MPI_COMM_WORLD);
     return 0;
 }
 int Producer(int *buffer, int buffer_size, int rank_proc, int resurce) {
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    if (rank != 0 || rank != rank_proc) {
-        MPI_Barrier(MPI_COMM_WORLD);
-    }
     if (size == 1 || rank_proc == 0) {
         for (int i = 0; i < buffer_size; i++) {
             if (buffer[i] == -1) {
@@ -105,8 +97,6 @@ int Producer(int *buffer, int buffer_size, int rank_proc, int resurce) {
             }
         }
     }
-    if (rank == rank_proc || rank == 0) {
-        MPI_Barrier(MPI_COMM_WORLD);
-    }
+    MPI_Barrier(MPI_COMM_WORLD);
     return 0;
 }
