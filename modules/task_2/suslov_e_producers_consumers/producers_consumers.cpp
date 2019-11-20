@@ -5,7 +5,7 @@
 #include <random>
 #include <ctime>
 #include <algorithm>
-#include "../../../modules/task_2/suslov_e_producer_consumer/producer_consumer.h"
+#include "../../../modules/task_2/suslov_e_producers_consumers/producers_consumers.h"
 
 
 std::vector<int> getRandomVector(int size_v) {

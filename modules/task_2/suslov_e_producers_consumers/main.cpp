@@ -2,7 +2,7 @@
 #include <gtest-mpi-listener.hpp>
 #include <gtest/gtest.h>
 #include <vector>
-#include "./producer_consumer.h"
+#include "./producers_consumers.h"
 
 TEST(Producer_Consumer, Producer_Test1) {
     int rank, size;
