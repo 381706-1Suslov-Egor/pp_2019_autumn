@@ -15,7 +15,6 @@ void InitializeMatrix(int N, int NZ, crsMatrix* mtx);
 void FreeMatrix(crsMatrix* mtx);
 double** mult_norm_matr(double** A, double** B, int N);
 double** create_norm_mtr(crsMatrix A);
-void print_norm_mtr(double** norm_mtr, int N);
 int MultiplicateMPI(crsMatrix* A, crsMatrix* B, crsMatrix* C);
 void create_part_crs_C(int row_peredali, crsMatrix* A, crsMatrix* B, crsMatrix* C);
 void MultiplicateGustafson(crsMatrix A, crsMatrix B, crsMatrix* C);

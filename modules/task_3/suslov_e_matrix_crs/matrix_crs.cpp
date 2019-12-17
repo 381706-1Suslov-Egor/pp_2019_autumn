@@ -267,19 +267,6 @@ double** create_norm_mtr(crsMatrix A) {
     return norm_mtr;
 }
 
-void print_norm_mtr(double** norm_mtr, int N) {
-    std::cout << std::endl;
-    std::cout << std::endl;
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            std::cout << norm_mtr[i][j]<<"   ";
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
-    std::cout << std::endl;
-}
-
 double** mult_norm_matr(double** A, double** B, int N) {
     double** C;
     C = new double* [N];
