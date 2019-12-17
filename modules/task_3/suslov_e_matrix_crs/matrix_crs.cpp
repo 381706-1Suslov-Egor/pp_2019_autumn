@@ -55,7 +55,7 @@ void GenerateRegularCRS(int N, int cntInRow, crsMatrix* mtx)
                 }
     }
     for (i = 0; i < cntInRow * N; i++)
-        mtx->Value[i] = (double(mersenne() % 1000)/100);
+        mtx->Value[i] = (static_cast<double>(mersenne() % 1000)/100);
     c = 0;
     for (i = 0; i <= N; i++) {
         mtx->RowIndex[i] = c;
@@ -164,15 +164,12 @@ int MultiplicateMPI(crsMatrix* A, crsMatrix* B, crsMatrix* C)
         C->RowIndex = new int[A->N + 1];
         C->Col = new int[vsego_elem_so_vseh_proc];
         C->Value = new double[vsego_elem_so_vseh_proc];
-        
         C->RowIndex[0] = 0;
-        for (int i = 0; i < massiv_elem_proc_helperov[0]; i++)
-        {
+        for (int i = 0; i < massiv_elem_proc_helperov[0]; i++) {
             C->Col[i] = C_temp->Col[i];
             C->Value[i] = C_temp->Value[i];
         }
-        for (int i = 1; i <= ostatok_last_proc + row_on_proc; i++)
-        {
+        for (int i = 1; i <= ostatok_last_proc + row_on_proc; i++) {
             C->RowIndex[i] = C_temp->RowIndex[i-1];
         }
         MPI_Status status1, status2, status3;
@@ -200,7 +197,6 @@ int MultiplicateMPI(crsMatrix* A, crsMatrix* B, crsMatrix* C)
         create_part_crs_C(row_on_proc, A, B, C);
         int sozdali_elem = C->RowIndex[row_on_proc - 1];
         MPI_Send(&sozdali_elem, 1, MPI_INT, 0, 5, MPI_COMM_WORLD);
-       
         MPI_Send(&C->RowIndex[0], row_on_proc, MPI_INT, 0, 1, MPI_COMM_WORLD);
         MPI_Send(&C->Col[0], sozdali_elem, MPI_INT, 0, 2, MPI_COMM_WORLD);
         MPI_Send(&C->Value[0], sozdali_elem, MPI_DOUBLE, 0, 3, MPI_COMM_WORLD);
@@ -267,7 +263,6 @@ double** create_norm_mtr(crsMatrix A)
     }
     for (int i = 0; i < A.N; i++) {
         for (int j = A.RowIndex[i]; j < A.RowIndex[i + 1]; j++) {
-        
             norm_mtr[i][A.Col[j]] = A.Value[j];
         }
     }
