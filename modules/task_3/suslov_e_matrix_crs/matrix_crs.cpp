@@ -61,7 +61,6 @@ void GenerateRegularCRS(int N, int cntInRow, crsMatrix* mtx) {
 }
 
 void MultiplicateGustafson(crsMatrix A, crsMatrix B, crsMatrix* C) {
-    int add_elem_vsego = 0, add_elem = 0;
     int strok_peredali_is_mtrA = A.N;
     std::vector<double> polnaya_stroka_C(A.N, 0);
     std::vector<double> crs_C_value_full;
@@ -86,7 +85,7 @@ void MultiplicateGustafson(crsMatrix A, crsMatrix B, crsMatrix* C) {
     }
     int row_index_size = crs_C_row_index_full.size();
     C->N = A.N;
-    add_elem_vsego = static_cast<double>(crs_C_value_full.size());
+    int add_elem_vsego = static_cast<double>(crs_C_value_full.size());
     C->NZ = add_elem_vsego;
     C->Col = new int[add_elem_vsego];
     C->Value = new double[add_elem_vsego];
