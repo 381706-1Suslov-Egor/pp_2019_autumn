@@ -211,7 +211,6 @@ int MultiplicateMPI(crsMatrix* A, crsMatrix* B, crsMatrix* C) {
 }
 
 void create_part_crs_C(int row_peredali, crsMatrix* A, crsMatrix* B, crsMatrix* C) {
-    int add_elem_vsego = 0, add_elem = 0;
     int strok_peredali_is_mtrA = row_peredali;
     std::vector<double> polnaya_stroka_C(A->N, 0);
     std::vector<double> crs_C_value_full;
@@ -235,7 +234,7 @@ void create_part_crs_C(int row_peredali, crsMatrix* A, crsMatrix* B, crsMatrix* 
     }
     int row_index_size = crs_C_row_index_full.size();
     C->N = A->N;
-    add_elem_vsego = crs_C_value_full.size();
+    int add_elem_vsego = crs_C_value_full.size();
     C->Col = new int[add_elem_vsego];
     C->Value = new double[add_elem_vsego];
     C->RowIndex = new int[row_index_size];
