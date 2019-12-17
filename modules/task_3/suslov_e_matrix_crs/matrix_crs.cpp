@@ -86,7 +86,7 @@ void MultiplicateGustafson(crsMatrix A, crsMatrix B, crsMatrix* C) {
     }
     int row_index_size = crs_C_row_index_full.size();
     C->N = A.N;
-    add_elem_vsego = int(crs_C_value_full.size());
+    add_elem_vsego = static_cast<double>(crs_C_value_full.size());
     C->NZ = add_elem_vsego;
     C->Col = new int[add_elem_vsego];
     C->Value = new double[add_elem_vsego];
@@ -140,7 +140,7 @@ int MultiplicateMPI(crsMatrix* A, crsMatrix* B, crsMatrix* C) {
         for (int i = 1; i < size; i++) {
             int otsilka = A->RowIndex[row_on_proc * i + ostatok_last_proc];
             MPI_Send(&A->RowIndex[row_on_proc * i + ostatok_last_proc], row_on_proc + 1, MPI_INT, i, 0, MPI_COMM_WORLD);
-            int kol = A->RowIndex[row_on_proc * (i + 1) + ostatok_last_proc] - A->RowIndex[row_on_proc * i + ostatok_last_proc];
+            int kol = A->RowIndex[row_on_proc*(i+1)+ostatok_last_proc]-A->RowIndex[row_on_proc*i+ostatok_last_proc];
             MPI_Send(&A->Col[otsilka], kol, MPI_INT, i, 1, MPI_COMM_WORLD);
             MPI_Send(&A->Value[otsilka], kol, MPI_DOUBLE, i, 2, MPI_COMM_WORLD);
         }
@@ -171,9 +171,10 @@ int MultiplicateMPI(crsMatrix* A, crsMatrix* B, crsMatrix* C) {
         }
         MPI_Status s1, s2, s3;
         for (int i = 1; i < size; i++) {
-            MPI_Recv(&C->RowIndex[row_on_proc * i + ostatok_last_proc + 1], row_on_proc, MPI_INT, i, 1, MPI_COMM_WORLD, &s1);
+            int chto = row_on_proc * i + ostatok_last_proc + 1;
+            MPI_Recv(&C->RowIndex[chto], row_on_proc, MPI_INT, i, 1, MPI_COMM_WORLD, &s1);
             for (int j = 0; j < row_on_proc; j++) {
-                C->RowIndex[row_on_proc * i + ostatok_last_proc+1+j] += C->RowIndex[row_on_proc * i + ostatok_last_proc];
+                C->RowIndex[chto +j] += C->RowIndex[row_on_proc * i + ostatok_last_proc];
             }
             int help = massiv_elem_proc_helperov[i];
             int index_prinytiya = C->RowIndex[row_on_proc * i + ostatok_last_proc];
@@ -265,6 +266,7 @@ double** create_norm_mtr(crsMatrix A) {
     }
     return norm_mtr;
 }
+
 void print_norm_mtr(double** norm_mtr, int N) {
     std::cout << std::endl;
     std::cout << std::endl;
