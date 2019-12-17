@@ -8,8 +8,11 @@ TEST(Multyplicate_crs_matrix, crs_matrix_row_index_test_1) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    crsMatrix A, B, C, Ctest;
-    int NZ = 2; // Ненулевых в каждой строке
+    crsMatrix* A = new crsMatrix;
+    crsMatrix* B = new crsMatrix;
+    crsMatrix* C = new crsMatrix;
+    crsMatrix* Ctest = new crsMatrix;
+    int NZ = 2;  // not null elem
     int N = 30;
     if (rank == 0) {
         GenerateRegularCRS(N, NZ, A);
@@ -17,11 +20,10 @@ TEST(Multyplicate_crs_matrix, crs_matrix_row_index_test_1) {
     }
     MultiplicateMPI(A, B, C);
     if (rank == 0) {
-        MultiplicateGustafson(A, B, Ctest);
+        MultiplicateGustafson(*A, *B, Ctest);
         for (int i = 0; i < N + 1; i++) {
-            ASSERT_EQ(C.RowIndex[i], Ctest.RowIndex[i]);
+            ASSERT_EQ(C->RowIndex[i], Ctest->RowIndex[i]);
         }
-
     }
 }
 
@@ -29,7 +31,10 @@ TEST(Multyplicate_crs_matrix, crs_matrix_col_test_2) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    crsMatrix A, B, C, Ctest;
+    crsMatrix* A = new crsMatrix;
+    crsMatrix* B = new crsMatrix;
+    crsMatrix* C = new crsMatrix;
+    crsMatrix* Ctest = new crsMatrix;
     int NZ = 2;
     int N = 30;
     if (rank == 0) {
@@ -38,11 +43,10 @@ TEST(Multyplicate_crs_matrix, crs_matrix_col_test_2) {
     }
     MultiplicateMPI(A, B, C);
     if (rank == 0) {
-        MultiplicateGustafson(A, B, Ctest);
-        for (int i = 0; i < C.RowIndex[N]; i++) {
-            ASSERT_EQ(C.Col[i], Ctest.Col[i]);
+        MultiplicateGustafson(*A, *B, Ctest);
+        for (int i = 0; i < C->RowIndex[N]; i++) {
+            ASSERT_EQ(C->Col[i], Ctest->Col[i]);
         }
-
     }
 }
 
@@ -50,7 +54,10 @@ TEST(Multyplicate_crs_matrix, crs_matrix_value_test_3) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    crsMatrix A, B, C, Ctest;
+    crsMatrix* A = new crsMatrix;
+    crsMatrix* B = new crsMatrix;
+    crsMatrix* C = new crsMatrix;
+    crsMatrix* Ctest = new crsMatrix;
     int NZ = 2;
     int N = 30;
     if (rank == 0) {
@@ -59,11 +66,10 @@ TEST(Multyplicate_crs_matrix, crs_matrix_value_test_3) {
     }
     MultiplicateMPI(A, B, C);
     if (rank == 0) {
-        MultiplicateGustafson(A, B, Ctest);
-        for (int i = 0; i < C.RowIndex[N]; i++) {
-            ASSERT_EQ(C.Value[i], Ctest.Value[i]);
+        MultiplicateGustafson(*A, *B, Ctest);
+        for (int i = 0; i < C->RowIndex[N]; i++) {
+            ASSERT_EQ(C->Value[i], Ctest->Value[i]);
         }
-
     }
 }
 
@@ -71,8 +77,11 @@ TEST(Multyplicate_crs_matrix, crs_matrix_one_row_index_test_4) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    crsMatrix A, B, C, Ctest;
-    int NZ = 1; // Ненулевых в каждой строке
+    crsMatrix* A = new crsMatrix;
+    crsMatrix* B = new crsMatrix;
+    crsMatrix* C = new crsMatrix;
+    crsMatrix* Ctest = new crsMatrix;
+    int NZ = 1;  // not null elem
     int N = 40;
     if (rank == 0) {
         GenerateRegularCRS(N, NZ, A);
@@ -80,19 +89,20 @@ TEST(Multyplicate_crs_matrix, crs_matrix_one_row_index_test_4) {
     }
     MultiplicateMPI(A, B, C);
     if (rank == 0) {
-        MultiplicateGustafson(A, B, Ctest);
+        MultiplicateGustafson(*A, *B, Ctest);
         for (int i = 0; i < N + 1; i++) {
-            ASSERT_EQ(C.RowIndex[i], Ctest.RowIndex[i]);
+            ASSERT_EQ(C->RowIndex[i], Ctest->RowIndex[i]);
         }
-
     }
 }
-
 TEST(Multyplicate_crs_matrix, crs_matrix_one_col_test_5) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    crsMatrix A, B, C, Ctest;
+    crsMatrix* A = new crsMatrix;
+    crsMatrix* B = new crsMatrix;
+    crsMatrix* C = new crsMatrix;
+    crsMatrix* Ctest = new crsMatrix;
     int NZ = 1;
     int N = 40;
     if (rank == 0) {
@@ -101,11 +111,10 @@ TEST(Multyplicate_crs_matrix, crs_matrix_one_col_test_5) {
     }
     MultiplicateMPI(A, B, C);
     if (rank == 0) {
-        MultiplicateGustafson(A, B, Ctest);
-        for (int i = 0; i < C.RowIndex[N]; i++) {
-            ASSERT_EQ(C.Col[i], Ctest.Col[i]);
+        MultiplicateGustafson(*A, *B, Ctest);
+        for (int i = 0; i < C->RowIndex[N]; i++) {
+            ASSERT_EQ(C->Col[i], Ctest->Col[i]);
         }
-
     }
 }
 
@@ -113,7 +122,10 @@ TEST(Multyplicate_crs_matrix, crs_matrix_one_value_test_6) {
     int rank, size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-    crsMatrix A, B, C, Ctest;
+    crsMatrix* A = new crsMatrix;
+    crsMatrix* B = new crsMatrix;
+    crsMatrix* C = new crsMatrix;
+    crsMatrix* Ctest = new crsMatrix;
     int NZ = 1;
     int N = 40;
     if (rank == 0) {
@@ -122,9 +134,9 @@ TEST(Multyplicate_crs_matrix, crs_matrix_one_value_test_6) {
     }
     MultiplicateMPI(A, B, C);
     if (rank == 0) {
-        MultiplicateGustafson(A, B, Ctest);
-        for (int i = 0; i < C.RowIndex[N]; i++) {
-            ASSERT_EQ(C.Value[i], Ctest.Value[i]);
+        MultiplicateGustafson(*A, *B, Ctest);
+        for (int i = 0; i < C->RowIndex[N]; i++) {
+            ASSERT_EQ(C->Value[i], Ctest->Value[i]);
         }
     }
 }
@@ -143,6 +155,5 @@ int main(int argc, char** argv) {
     listeners.Append(new GTestMPIListener::MPIMinimalistPrinter);
     return RUN_ALL_TESTS();
 }
-
 
 
