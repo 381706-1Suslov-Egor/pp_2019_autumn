@@ -11,8 +11,7 @@
 
 bool isSrandCalled = false;
 
-void InitializeMatrix(int N, int NZ, crsMatrix* mtx)
-{
+void InitializeMatrix(int N, int NZ, crsMatrix* mtx) {
     mtx->N = N;
     mtx->NZ = NZ;
     mtx->Value = new double[NZ];
@@ -20,15 +19,13 @@ void InitializeMatrix(int N, int NZ, crsMatrix* mtx)
     mtx->RowIndex = new int[N + 1];
 }
 
-void FreeMatrix(crsMatrix* mtx)
-{
+void FreeMatrix(crsMatrix* mtx) {
     delete[] mtx->Value;
     delete[] mtx->Col;
     delete[] mtx->RowIndex;
 }
 
-void GenerateRegularCRS(int N, int cntInRow, crsMatrix* mtx)
-{
+void GenerateRegularCRS(int N, int cntInRow, crsMatrix* mtx) {
     std::mt19937 mersenne;
     mersenne.seed(static_cast<unsigned int>(time(0)));
     int i, j, k, f, tmp, notNull, c;
@@ -63,8 +60,7 @@ void GenerateRegularCRS(int N, int cntInRow, crsMatrix* mtx)
     }
 }
 
-void MultiplicateGustafson(crsMatrix A, crsMatrix B, crsMatrix* C)
-{
+void MultiplicateGustafson(crsMatrix A, crsMatrix B, crsMatrix* C) {
     int add_elem_vsego = 0, add_elem = 0;
     int strok_peredali_is_mtrA = A.N;
     std::vector<double> polnaya_stroka_C(A.N, 0);
@@ -104,8 +100,7 @@ void MultiplicateGustafson(crsMatrix A, crsMatrix B, crsMatrix* C)
     }
 }
 
-int MultiplicateMPI(crsMatrix* A, crsMatrix* B, crsMatrix* C)
-{
+int MultiplicateMPI(crsMatrix* A, crsMatrix* B, crsMatrix* C) {
     int size, rank;
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -143,9 +138,11 @@ int MultiplicateMPI(crsMatrix* A, crsMatrix* B, crsMatrix* C)
     MPI_Bcast(B->RowIndex, B->N+1, MPI_INT, 0, MPI_COMM_WORLD);
     if (rank == 0) {
         for (int i = 1; i < size; i++) {
+            int otsilka = A->RowIndex[row_on_proc * i + ostatok_last_proc];
             MPI_Send(&A->RowIndex[row_on_proc * i + ostatok_last_proc], row_on_proc + 1, MPI_INT, i, 0, MPI_COMM_WORLD);
-            MPI_Send(&A->Col[A->RowIndex[row_on_proc * i + ostatok_last_proc]], A->RowIndex[row_on_proc * (i + 1) + ostatok_last_proc] - A->RowIndex[row_on_proc * i + ostatok_last_proc], MPI_INT, i, 1, MPI_COMM_WORLD);
-            MPI_Send(&A->Value[A->RowIndex[row_on_proc * i + ostatok_last_proc]], A->RowIndex[row_on_proc * (i+1) + ostatok_last_proc] - A->RowIndex[row_on_proc * i + ostatok_last_proc], MPI_DOUBLE, i, 2, MPI_COMM_WORLD);
+            int kol = A->RowIndex[row_on_proc * (i + 1) + ostatok_last_proc] - A->RowIndex[row_on_proc * i + ostatok_last_proc];
+            MPI_Send(&A->Col[otsilka], kol, MPI_INT, i, 1, MPI_COMM_WORLD);
+            MPI_Send(&A->Value[otsilka], kol, MPI_DOUBLE, i, 2, MPI_COMM_WORLD);
         }
         crsMatrix c;
         crsMatrix* C_temp = &c;
@@ -172,14 +169,16 @@ int MultiplicateMPI(crsMatrix* A, crsMatrix* B, crsMatrix* C)
         for (int i = 1; i <= ostatok_last_proc + row_on_proc; i++) {
             C->RowIndex[i] = C_temp->RowIndex[i-1];
         }
-        MPI_Status status1, status2, status3;
+        MPI_Status s1, s2, s3;
         for (int i = 1; i < size; i++) {
-            MPI_Recv(&C->RowIndex[row_on_proc * i + ostatok_last_proc + 1], row_on_proc, MPI_INT, i, 1, MPI_COMM_WORLD, &status1);
+            MPI_Recv(&C->RowIndex[row_on_proc * i + ostatok_last_proc + 1], row_on_proc, MPI_INT, i, 1, MPI_COMM_WORLD, &s1);
             for (int j = 0; j < row_on_proc; j++) {
                 C->RowIndex[row_on_proc * i + ostatok_last_proc+1+j] += C->RowIndex[row_on_proc * i + ostatok_last_proc];
             }
-            MPI_Recv(&C->Col[C->RowIndex[row_on_proc * i + ostatok_last_proc]], massiv_elem_proc_helperov[i], MPI_INT, i, 2, MPI_COMM_WORLD, &status2);
-            MPI_Recv(&C->Value[C->RowIndex[row_on_proc * i + ostatok_last_proc]], massiv_elem_proc_helperov[i], MPI_DOUBLE, i, 3, MPI_COMM_WORLD, &status3);
+            int help = massiv_elem_proc_helperov[i];
+            int index_prinytiya = C->RowIndex[row_on_proc * i + ostatok_last_proc];
+            MPI_Recv(&C->Col[index_prinytiya], help, MPI_INT, i, 2, MPI_COMM_WORLD, &s2);
+            MPI_Recv(&C->Value[index_prinytiya], help, MPI_DOUBLE, i, 3, MPI_COMM_WORLD, &s3);
         }
         FreeMatrix(C_temp);
         delete[] massiv_elem_proc_helperov;
@@ -210,8 +209,7 @@ int MultiplicateMPI(crsMatrix* A, crsMatrix* B, crsMatrix* C)
     return 0;
 }
 
-void create_part_crs_C(int row_peredali, crsMatrix* A, crsMatrix* B, crsMatrix* C)
-{
+void create_part_crs_C(int row_peredali, crsMatrix* A, crsMatrix* B, crsMatrix* C) {
     int add_elem_vsego = 0, add_elem = 0;
     int strok_peredali_is_mtrA = row_peredali;
     std::vector<double> polnaya_stroka_C(A->N, 0);
@@ -249,8 +247,7 @@ void create_part_crs_C(int row_peredali, crsMatrix* A, crsMatrix* B, crsMatrix* 
     }
 }
 
-double** create_norm_mtr(crsMatrix A)
-{
+double** create_norm_mtr(crsMatrix A) {
     double** norm_mtr;
     norm_mtr = new double*[A.N];
     for (int j = 0; j < A.N; j++) {
@@ -280,6 +277,7 @@ void print_norm_mtr(double** norm_mtr, int N) {
     std::cout << std::endl;
     std::cout << std::endl;
 }
+
 double** mult_norm_matr(double** A, double** B, int N) {
     double** C;
     C = new double* [N];
